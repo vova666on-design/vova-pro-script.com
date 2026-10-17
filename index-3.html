@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ScriptVault — общая библиотека скриптов Roblox и Delta</title>
+<style>
+:root{--bg:#0a0a0b;--card:#17100fcc;--card2:#241716;--line:#ffffff14;--tx:#f4eeee;--mu:#a08f8f;--ac:#e11d2e;--ac2:#ff6a3d;--ok:#3ddc97;--code:#0c0809;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme="light"]{--bg:#fbf3f3;--card:#ffffffd9;--card2:#f6e4e4;--line:#0000001a;--tx:#1a0d0e;--mu:#7a5a5c;--code:#1a0d0e}
+:root[data-theme="dark"]{--bg:#0a0a0b}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden;min-height:100vh}
+body:before,body:after{content:"";position:fixed;z-index:-1;width:60vmax;height:60vmax;border-radius:50%;filter:blur(90px);opacity:.28;animation:drift 18s ease-in-out infinite alternate}
+body:before{background:var(--ac);top:-25vmax;left:-15vmax}body:after{background:var(--ac2);bottom:-30vmax;right:-20vmax;animation-delay:-9s}
+@keyframes drift{to{transform:translate(8vmax,6vmax) scale(1.15)}}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+.wrap{max-width:1120px;margin:0 auto;padding:0 18px}
+nav{position:sticky;top:0;z-index:10;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);background:color-mix(in srgb,var(--bg) 70%,transparent);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;gap:12px;height:62px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;letter-spacing:-.3px}
+.logo i{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--ac),var(--ac2));display:grid;place-items:center;font-style:normal;font-size:17px;box-shadow:0 6px 18px #e11d2e55}
+.sp{flex:1}
+.btn{padding:9px 16px;border-radius:12px;background:var(--card2);border:1px solid var(--line);font-weight:600;font-size:14px;transition:transform .15s,background .2s}.btn:active{transform:scale(.96)}
+.btn.p{background:linear-gradient(135deg,var(--ac),#ff4b2b);color:#fff;border:0;box-shadow:0 8px 22px #e11d2e55}
+.hero{text-align:center;padding:64px 0 30px}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:99px;background:var(--card);border:1px solid var(--line);font-size:13px;color:var(--mu)}.pill b{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px var(--ok)}
+h1{font-size:clamp(34px,7vw,64px);line-height:1.05;margin:20px 0 14px;letter-spacing:-1.5px}
+h1 span{background:linear-gradient(120deg,var(--ac),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:var(--mu);max-width:560px;margin:0 auto 28px;font-size:17px}
+.search{position:relative;max-width:620px;margin:0 auto}
+.search input{width:100%;height:58px;border-radius:18px;border:1px solid var(--line);background:var(--card);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);color:var(--tx);font:inherit;padding:0 20px 0 52px;outline:0;box-shadow:0 14px 40px #0000002e;transition:border-color .2s,box-shadow .2s}
+.search input:focus{border-color:var(--ac);box-shadow:0 0 0 4px #e11d2e30}
+.search svg{position:absolute;left:18px;top:19px;width:20px;height:20px;fill:var(--mu)}
+.stats{display:flex;justify-content:center;gap:34px;margin-top:30px;flex-wrap:wrap}.stats div{font-size:13px;color:var(--mu)}.stats b{display:block;font-size:24px;color:var(--tx)}
+.bar{display:flex;gap:10px;align-items:center;margin:34px 0 18px;flex-wrap:wrap}
+.chips{display:flex;gap:8px;overflow-x:auto;flex:1;padding:2px;scrollbar-width:none;min-width:0}.chips::-webkit-scrollbar{display:none}
+.chip{padding:8px 16px;border-radius:99px;background:var(--card);border:1px solid var(--line);font-size:14px;font-weight:500;white-space:nowrap;color:var(--mu);transition:all .2s}.chip.on{background:linear-gradient(135deg,var(--ac),#ff4b2b);color:#fff;border-color:transparent;box-shadow:0 6px 18px #e11d2e44}
+select{background:var(--card);color:var(--tx);border:1px solid var(--line);border-radius:12px;padding:9px 12px;font:inherit;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;padding-bottom:70px}
+.card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s;animation:in .5s both}
+.card:hover{transform:translateY(-4px);border-color:#e11d2e88;box-shadow:0 18px 44px #e11d2e22}
+@keyframes in{from{opacity:0;transform:translateY(14px)}}
+.th{height:104px;border-radius:14px;margin-bottom:14px;display:grid;place-items:center;font-size:42px;position:relative;overflow:hidden}
+.th:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 0,#ffffff40,transparent 55%)}
+.card h3{margin:0 0 4px;font-size:17px;letter-spacing:-.2px;display:flex;gap:6px;align-items:center}
+.ver{color:var(--ok);font-size:13px}
+.card p{margin:0 0 12px;color:var(--mu);font-size:14px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}.tag{font-size:12px;padding:3px 9px;border-radius:8px;background:var(--card2);color:var(--mu)}
+.meta{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--mu)}
+.lk{display:flex;align-items:center;gap:5px;padding:6px 11px;border-radius:10px;background:var(--card2);transition:all .2s}.lk.on{color:#ff5d82;background:#ff5d8222}.lk:active{transform:scale(.9)}
+.pic{display:block;width:100%;max-height:340px;object-fit:cover;border-radius:16px;margin:14px 0 4px;border:1px solid var(--line)}
+.au{font-size:12px;color:var(--mu);margin:-6px 0 10px}
+.cpc{width:100%;margin-top:12px;padding:10px;border-radius:12px;background:linear-gradient(135deg,var(--ac),#ff4b2b);color:#fff;font-weight:600;font-size:14px;box-shadow:0 6px 16px #e11d2e44;transition:transform .15s}.cpc:active{transform:scale(.97)}
+.empty{grid-column:1/-1;text-align:center;color:var(--mu);padding:60px 0}
+.ov{position:fixed;inset:0;z-index:30;background:#000a;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:flex-end;justify-content:center}.ov.on{display:flex;animation:fd .2s}
+@keyframes fd{from{opacity:0}}
+.md{width:100%;max-width:720px;max-height:92vh;overflow:auto;background:var(--bg);border:1px solid var(--line);border-radius:26px 26px 0 0;padding:22px 20px calc(22px + env(safe-area-inset-bottom,0px));animation:up .3s cubic-bezier(.2,.9,.3,1)}
+@keyframes up{from{transform:translateY(60px);opacity:0}}
+@media(min-width:720px){.ov{align-items:center}.md{border-radius:26px}}
+.md h2{margin:0 0 6px;font-size:24px;letter-spacing:-.5px}
+.cb{position:relative;margin:16px 0;background:var(--code);border-radius:16px;border:1px solid var(--line)}
+.cb pre{margin:0;padding:16px;overflow-x:auto;font:13px/1.6 ui-monospace,Menlo,Consolas,monospace;color:#dfe5f7}
+.cb .cp{position:absolute;top:10px;right:10px;padding:6px 12px;border-radius:10px;background:#ffffff1c;color:#fff;font-size:13px;backdrop-filter:blur(8px)}
+.k{color:#c792ea}.s{color:#9ece6a}.c{color:#6c7693;font-style:italic}.n{color:#ff9e64}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+label{display:block;font-size:13px;color:var(--mu);margin:12px 0 6px}
+.in{width:100%;background:var(--card2);border:1px solid var(--line);border-radius:12px;color:var(--tx);font:inherit;padding:11px 14px;outline:0}.in:focus{border-color:var(--ac)}
+textarea.in{min-height:140px;font:13px ui-monospace,Menlo,monospace;resize:vertical}
+.note{font-size:13px;color:var(--mu);background:var(--card2);border-radius:12px;padding:10px 14px;margin-top:14px}
+footer{border-top:1px solid var(--line);padding:26px 0 40px;text-align:center;color:var(--mu);font-size:13px}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:var(--tx);color:var(--bg);padding:11px 20px;border-radius:14px;font-weight:600;font-size:14px;opacity:0;pointer-events:none;transition:all .3s;z-index:50}#toast.on{opacity:1;transform:translate(-50%,0)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<nav><div class="wrap"><div class="logo"><i>⚡</i>ScriptVault</div><div class="sp"></div><button class="btn" id="th" aria-label="Тема">🌓</button><button class="btn" id="auth">🔑 Вход</button><button class="btn p" id="add" style="display:none">＋ Добавить</button></div></nav>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="pill"><b id="dbDot"></b><span id="dbStatus">Подключаем общую базу…</span></div>
+    <h1>Скрипты для Roblox и Delta,<br><span>найди за секунду</span></h1>
+    <p class="lead">Смотри и копируй готовые скрипты в один клик. Новые скрипты добавляет владелец сайта.</p>
+    <div class="search"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg><input id="q" placeholder="Поиск: бег, прыжок, лидерборд…" autocomplete="off"></div>
+    <div class="stats"><div><b id="sN">0</b>скриптов</div><div><b id="sV">0</b>просмотров</div><div><b id="sL">0</b>лайков</div><div><b id="sC">0</b>людей скопировало</div></div>
+  </section>
+
+  <div class="bar"><div class="chips" id="chips"></div>
+    <select id="so"><option value="new">Новые</option><option value="pop">Популярные</option><option value="lk">По лайкам</option></select></div>
+  <div class="grid" id="grid"></div>
+</main>
+<footer><div class="wrap">ScriptVault · общая библиотека скриптов. Проверяй код перед запуском и публикуй только то, чем имеешь право делиться.</div></footer>
+
+<div class="ov" id="ov"><div class="md" id="md"></div></div>
+<div id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const CATS=['Все','Движение','Бой','Интерфейс','Мир','Утилиты'];
+let S=[];
+const $=id=>document.getElementById(id);
+const SUPABASE_URL='https://kbeqbtfuyocyikhqqbbd.supabase.co';
+const SUPABASE_KEY='sb_publishable_viFYHlZmWhz0_caUWK-awg_iDRJZeYE';
+const db=window.supabase?.createClient?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
+let cat='Все',liked=new Set(),root=document.documentElement;
+let visitorId='';
+try{visitorId=localStorage.getItem('sv_visitor_id')||crypto.randomUUID();localStorage.setItem('sv_visitor_id',visitorId);const saved=JSON.parse(localStorage.getItem('sv_l')||'[]');liked=new Set(saved.map(String));const th=localStorage.getItem('sv_t');if(th)root.dataset.theme=th}catch(e){visitorId=String(Date.now())+Math.random().toString(36).slice(2)}
+function setDbStatus(message,ok=false){const el=$('dbStatus'),dot=$('dbDot');if(el)el.textContent=message;if(dot)dot.style.background=ok?'var(--ok)':'#ff6b6b';}
+function fromDb(r){return {id:String(r.id),t:r.title,cat:r.category||'Утилиты',e:r.emoji||'📜',g:r.gradient||'#e11d2e,#ff6a3d',d:r.description||'Без описания',tags:Array.isArray(r.tags)?r.tags:['Скрипт'],v:Number(r.views||0),l:Number(r.likes||0),c:Number(r.copies||0),img:(typeof r.image_url==='string'&&r.image_url.startsWith(SUPABASE_URL+'/storage/'))?r.image_url:'',ago:0,u:r.author||'Аноним',code:r.code,remote:true};}
+async function loadCloudScripts(){
+  if(!db){setDbStatus('Не удалось загрузить Supabase');return;}
+  const {data,error}=await db.from('scripts').select('*').order('created_at',{ascending:false}).limit(300);
+  if(error){console.error('Supabase read error:',error);setDbStatus('База не настроена — см. SQL');return;}
+  S=(data||[]).map(fromDb);
+  setDbStatus('Общая база подключена',true);
+  render();
+  await refreshStats();
+}
+const save=()=>{try{localStorage.setItem('sv_l',JSON.stringify([...liked].map(String)))}catch(e){}};
+async function refreshStats(){if(!db)return;const {data,error}=await db.rpc('get_script_stats');if(error){console.error('Stats error:',error);return;}const st=Array.isArray(data)?data[0]:data;if(!st)return;$('sN').textContent=Number(st.scripts||0);$('sV').textContent=fm(Number(st.views||0));$('sL').textContent=fm(Number(st.likes||0));$('sC').textContent=fm(Number(st.copies||0));}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fm=n=>n>=1000?(n/1000).toFixed(n>=10000?0:1)+'K':n;
+function hl(code){return esc(code).replace(/(--[^\n]*)|("[^"\n]*")|\b(local|function|end|if|then|else|elseif|for|do|while|in|return|not|and|or|true|false|nil)\b|\b(\d+\.?\d*)\b/g,(m,c,s,k,n)=>c?`<span class="c">${c}</span>`:s?`<span class="s">${s}</span>`:k?`<span class="k">${k}</span>`:`<span class="n">${n}</span>`)}
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),1800)}
+function stats(){/* Счётчики запрашиваются из Supabase, а не вычисляются из карточек. */}
+function render(){
+  const q=$('q').value.trim().toLowerCase(),so=$('so').value;
+  let v=S.filter(x=>(cat==='Все'||x.cat===cat)&&(!q||(x.t+x.d+x.tags.join(' ')+x.cat).toLowerCase().includes(q)));
+  v.sort((a,b)=>so==='pop'?b.v-a.v:so==='lk'?(b.l+(liked.has(String(b.id))?1:0))-(a.l+(liked.has(String(a.id))?1:0)):a.ago-b.ago);
+  $('grid').innerHTML=v.length?v.map((x,i)=>`<div class="card" style="animation-delay:${i*40}ms" onclick="openS('${x.id}')"><div class="th" style="${x.img?`background:#000 url('${x.img}') center/cover no-repeat`:`background:linear-gradient(135deg,${x.g.split(',')[0]},${x.g.split(',')[1]})`}">${x.img?'':x.e}</div><h3>${esc(x.t)} <span class="ver">✓</span></h3><p>${esc(x.d)}</p><div class="au">Автор: ${esc(x.u)}</div><div class="tags">${x.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div><div class="meta"><span>👁 ${fm(x.v)} · 📋 ${fm(x.c)}</span><button class="lk ${liked.has(String(x.id))?'on':''}" onclick="event.stopPropagation();lk('${x.id}')">${liked.has(String(x.id))?'♥':'♡'} ${fm(x.l)}</button></div><button class="cpc" onclick="event.stopPropagation();cpy('${x.id}')">📋 Копировать скрипт</button>${isAdmin?`<button class="btn" style="width:100%;margin-top:8px;color:#ff5d5d" onclick="event.stopPropagation();delS('${x.id}')">🗑 Удалить</button>`:''}</div>`).join(''):'<div class="empty">Ничего не найдено 😕<br>Попробуй другой запрос</div>';
+  $('chips').innerHTML=CATS.map(c=>`<button class="chip ${c===cat?'on':''}" onclick="cat='${c}';render()">${c}</button>`).join('');
+  stats();
+}
+async function lk(id){id=String(id);const x=S.find(s=>String(s.id)===id);if(!x||!x.remote)return toast('Лайки доступны после загрузки из базы');if(!db)return toast('Нет подключения к базе');const {data,error}=await db.rpc('toggle_script_like',{p_script_id:id,p_visitor_id:visitorId});if(error){console.error('Like error:',error);return toast('Не удалось сохранить лайк');}if(data===true)liked.add(id);else liked.delete(id);save();await loadCloudScripts();if($('ov').classList.contains('on')&&String(cur)===id)openS(id,1)}
+let cur=0;
+async function openS(id,keep){
+  const x=S.find(s=>String(s.id)===String(id));if(!x)return;cur=String(id);if(!keep&&x.remote&&db){const {error}=await db.rpc('record_script_view',{p_script_id:String(id)});if(error)console.error('View count error:',error);else{ x.v++; refreshStats(); }}
+  $('md').innerHTML=`<div style="display:flex;justify-content:space-between;gap:10px"><div><h2>${x.e} ${esc(x.t)}</h2><div class="tags">${x.tags.concat(x.cat).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div></div><button class="btn" onclick="closeM()">✕</button></div>${x.img?`<img class="pic" src="${x.img}" alt="">`:''}<p style="color:var(--mu)">${esc(x.d)}</p><div class="cb"><button class="cp" onclick="cpy('${x.id}')">Копировать</button><pre><code>${hl(x.code)}</code></pre></div><div class="row"><button class="btn p" onclick="cpy('${x.id}')">📋 Копировать код</button><button class="btn" onclick="lk('${x.id}')">${liked.has(String(x.id))?'♥ В избранном':'♡ Нравится'}</button>${isAdmin?`<button class="btn" style="color:#ff5d5d" onclick="delS('${x.id}')">🗑 Удалить</button>`:''}</div><div class="note">Автор: ${esc(x.u)} · 👁 ${fm(x.v)} просмотров · 📋 ${fm(x.c)} скопировали · ♥ ${fm(x.l)} лайков. Проверь код перед запуском и убедись, что понимаешь, что он делает.</div>`;
+  $('ov').classList.add('on');render();
+}
+function closeM(){$('ov').classList.remove('on')}
+async function cpy(id){const x=S.find(s=>String(s.id)===String(id));if(!x)return;try{await navigator.clipboard.writeText(x.code)}catch(e){const t=document.createElement('textarea');t.value=x.code;document.body.appendChild(t);t.select();try{document.execCommand('copy')}catch(_){}t.remove()}toast('Скопировано ✓');
+  if(x.remote&&db){const {data,error}=await db.rpc('record_script_copy',{p_script_id:String(id),p_visitor_id:visitorId});if(error)console.error('Copy count error:',error);else if(data===true){x.c++;render();refreshStats();if($('ov').classList.contains('on')&&String(cur)===String(id))openS(id,1)}}}
+$('ov').addEventListener('click',e=>{if(e.target===$('ov'))closeM()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM()});
+$('q').addEventListener('input',render);$('so').addEventListener('change',render);
+$('th').onclick=()=>{const d=root.dataset.theme==='light';root.dataset.theme=d?'dark':'light';try{localStorage.setItem('sv_t',root.dataset.theme)}catch(e){}};
+$('add').onclick=()=>{
+  $('md').innerHTML=`<div style="display:flex;justify-content:space-between"><h2>Опубликовать скрипт</h2><button class="btn" onclick="closeM()">✕</button></div><label>Название</label><input class="in" id="fT" maxlength="80" placeholder="Например: быстрый бег"><label>Описание</label><input class="in" id="fD" maxlength="240" placeholder="Что делает скрипт"><label>Автор / ник</label><input class="in" id="fA" maxlength="40" placeholder="Аноним"><label>Категория</label><select class="in" id="fC">${CATS.slice(1).map(c=>`<option>${c}</option>`).join('')}</select><label>Фото (необязательно, до 3 МБ)</label><input class="in" id="fI" type="file" accept="image/jpeg,image/png,image/webp"><label>Код скрипта</label><textarea class="in" id="fK" spellcheck="false" maxlength="100000" placeholder="Вставь код сюда…"></textarea><div class="note">Скрипт сохранится в базе Supabase и станет виден всем посетителям. Не размещай пароли, токены или чужие закрытые данные.</div><div class="row" style="margin-top:16px"><button class="btn p" onclick="sub()">Опубликовать</button></div>`;
+  $('ov').classList.add('on');
+};
+function shrink(file){return new Promise((res,rej)=>{const img=new Image(),u=URL.createObjectURL(file);img.onload=()=>{const k=Math.min(1,1200/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);c.toBlob(b=>{URL.revokeObjectURL(u);b?res(b):rej(new Error('img'))},'image/jpeg',.85)};img.onerror=()=>{URL.revokeObjectURL(u);rej(new Error('img'))};img.src=u})}
+async function sub(){
+  const t=$('fT').value.trim(),k=$('fK').value.trim(),d=$('fD').value.trim(),author=$('fA').value.trim()||'Аноним';
+  if(!isAdmin)return toast('Публиковать может только владелец');
+  if(!t||!k)return toast('Заполни название и код');
+  if(t.length>80||d.length>240||author.length>40||k.length>100000)return toast('Проверь длину полей');
+  if(!db)return toast('Supabase не подключён — проверь интернет и ключ');
+  const G=['#e11d2e,#ff6a3d','#7f1d1d,#ef4444','#450a0a,#dc2626','#b91c1c,#fb923c'],E=['✨','🧩','🚀','🎮'],i=Math.floor(Math.random()*4);
+  let image_url=null;const f=$('fI')&&$('fI').files[0];
+  if(f){
+    try{const blob=await shrink(f),path=crypto.randomUUID()+'.jpg';
+      const up=await db.storage.from('script-images').upload(path,blob,{contentType:'image/jpeg'});
+      if(up.error){console.error(up.error);return toast('Фото не загрузилось: '+up.error.message)}
+      image_url=db.storage.from('script-images').getPublicUrl(path).data.publicUrl;
+    }catch(e){return toast('Не удалось обработать фото')}
+  }
+  const {error}=await db.from('scripts').insert({image_url,title:t,description:d||'Без описания',author,category:$('fC').value,emoji:E[i],gradient:G[i],tags:['Пользовательский'],code:k});
+  if(error){console.error('Supabase insert error:',error);return toast('Не опубликовано: проверь SQL и правила доступа');}
+  closeM();cat='Все';$('so').value='new';await loadCloudScripts();toast('Опубликовано для всех ✓');
+}
+let isAdmin=false,adminOpen=false,session=null;
+async function checkAdmin(){
+  isAdmin=false;adminOpen=false;
+  if(db){
+    const r=await db.auth.getSession();session=r.data&&r.data.session||null;
+    if(session){
+      const a=await db.rpc('is_script_admin');isAdmin=a.data===true;
+      if(!isAdmin){const o=await db.rpc('script_admin_open');adminOpen=o.data===true}
+    }
+  }
+  $('add').style.display=isAdmin?'':'none';
+  $('auth').textContent=session?(isAdmin?'👑 Владелец':'👤 Аккаунт'):'🔑 Вход';
+  render();
+}
+async function delS(id){
+  id=String(id);
+  if(!isAdmin)return toast('Удалять может только владелец');
+  const x=S.find(s=>String(s.id)===id);if(!x)return;
+  if(!confirm('Удалить «'+x.t+'» навсегда?'))return;
+  const {data,error}=await db.from('scripts').delete().eq('id',id).select('id');
+  if(error){console.error('Delete error:',error);return toast('Не удалось удалить: '+error.message)}
+  if(!data||!data.length)return toast('Не удалилось: войди как владелец');
+  if(x.img){try{const p=x.img.split('/script-images/')[1];if(p)await db.storage.from('script-images').remove([decodeURIComponent(p)])}catch(e){console.error(e)}}
+  closeM();await loadCloudScripts();toast('Удалено ✓');
+}
+function authModal(){
+  if(session){
+    $('md').innerHTML=`<div style="display:flex;justify-content:space-between"><h2>Аккаунт</h2><button class="btn" onclick="closeM()">✕</button></div><p style="color:var(--mu)">${esc(session.user.email||'')}</p><div class="note">${isAdmin?'Ты владелец: можешь публиковать скрипты.':'Публиковать скрипты может только владелец сайта.'}</div><div class="row" style="margin-top:16px">${adminOpen?'<button class="btn p" onclick="claimOwner()">Стать владельцем</button>':''}<button class="btn" onclick="signOut()">Выйти</button></div>`;
+  }else{
+    $('md').innerHTML=`<div style="display:flex;justify-content:space-between"><h2>Вход для владельца</h2><button class="btn" onclick="closeM()">✕</button></div><label>Email</label><input class="in" id="aE" type="email" autocomplete="email"><label>Пароль (минимум 6 символов)</label><input class="in" id="aP" type="password" autocomplete="current-password"><div class="row" style="margin-top:16px"><button class="btn p" onclick="doAuth('in')">Войти</button><button class="btn" onclick="doAuth('up')">Регистрация</button></div>`;
+  }
+  $('ov').classList.add('on');
+}
+async function doAuth(mode){
+  if(!db)return toast('Нет подключения к базе');
+  const email=$('aE').value.trim(),password=$('aP').value;
+  if(!email||password.length<6)return toast('Введи email и пароль от 6 символов');
+  const r=mode==='up'?await db.auth.signUp({email,password}):await db.auth.signInWithPassword({email,password});
+  if(r.error)return toast('Ошибка: '+r.error.message);
+  if(mode==='up'&&!r.data.session){closeM();return toast('Проверь почту и подтверди email, потом войди')}
+  await checkAdmin();closeM();toast('Готово ✓');
+}
+async function claimOwner(){
+  const {data,error}=await db.rpc('claim_script_admin');
+  if(error||data!==true)return toast('Не удалось: владелец уже назначен');
+  await checkAdmin();closeM();toast('Ты теперь владелец ✓');
+}
+async function signOut(){await db.auth.signOut();await checkAdmin();closeM();toast('Вышел')}
+$('auth').onclick=authModal;
+if(db)db.auth.onAuthStateChange(()=>{checkAdmin()});
+checkAdmin();
+render();loadCloudScripts();
+</script>
+</body>
+</html>
